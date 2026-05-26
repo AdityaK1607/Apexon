@@ -1,0 +1,98 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  margin-bottom: 0.25rem;
+}
+
+.job-form {
+  background: #f0f0ff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  border: 1px solid #b0b0ff;
+}
+
+.job-form h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  color: #4b00b0;
+}
+
+.form-row {
+  margin-bottom: 1rem;
+}
+
+.form-row label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-row textarea {
+  resize: vertical;
+}
+
+.job-form button {
+  padding: 0.75rem 1.5rem;
+  background: #4b00b0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.job-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.job-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.job-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.job-card h2 {
+  margin: 0 0 0.25rem;
+  color: #800080;
+}
+
+.job-card h3 {
+  margin: 0 0 0.75rem;
+  color: #008000;
+}
+
+.job-card p strong {
+  color: #4b00b0;
+}
+
+.error {
+  color: red;
+  padding: 0.75rem;
+  background: #ffebee;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
