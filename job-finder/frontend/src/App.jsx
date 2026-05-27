@@ -13,6 +13,11 @@ function App() {
   });
   const [submitting, setSubmitting] = useState(false);
 
+  const [linkedInJobs, setLinkedInJobs] = useState([]);
+  const [linkedInLoading, setLinkedInLoading] = useState(true);
+  const [linkedInFilter, setLinkedInFilter] = useState('');
+
+  // Load local jobs
   useEffect(() => {
     const fetchJobs = async () => {
       setLoading(true);
@@ -27,8 +32,27 @@ function App() {
         setLoading(false);
       }
     };
-
     fetchJobs();
+  }, []);
+
+  // Load LinkedIn jobs
+  useEffect(() => {
+    const fetchLinkedInJobs = async () => {
+      setLinkedInLoading(true);
+      try {
+        const res = await fetch(
+          'http://127.0.0.1:8000/api/linkedin-jobs?query='
+        );
+        if (!res.ok) throw new Error('Failed to fetch LinkedIn jobs');
+        const data = await res.json();
+        setLinkedInJobs(data);
+      } catch (err) {
+        // Silently fail for placeholder
+      } finally {
+        setLinkedInLoading(false);
+      }
+    };
+    fetchLinkedInJobs();
   }, []);
 
   const handleChange = (e) => {
@@ -68,59 +92,125 @@ function App() {
     }
   };
 
+  const filteredLinkedInJobs = linkedInJobs.filter((job) => {
+    if (!linkedInFilter) return true;
+    const q = linkedInFilter.toLowerCase();
+    return (
+      job.title.toLowerCase().includes(q) ||
+      job.company.toLowerCase().includes(q) ||
+      job.location.toLowerCase().includes(q) ||
+      job.description.toLowerCase().includes(q)
+    );
+  });
+
   return (
-    <div className='container'>
-      <h1>Job Finder</h1>
-      <p>Simple job board with your own data</p>
-
-      {error && <div className='error'><p>{error}</p></div>}
-
-      <form onSubmit={handleSubmit} className='job-form'>
-        <h2>Add a new job</h2>
-
-        <div className='form-row'>
-          <label>Title
-            <input type='text' name='title' value={newJob.title} onChange={handleChange} />
-          </label>
+    <div className='app'>
+      <header className='header'>
+        <div className='logo'>
+          <div className='logo-placeholder'>Apexon</div>
+          <h1>Job Finder</h1>
         </div>
+      </header>
 
-        <div className='form-row'>
-          <label>Company
-            <input type='text' name='company' value={newJob.company} onChange={handleChange} />
-          </label>
-        </div>
+      <main className='main'>
+        <p className='tagline'>Simple job board with your own data + LinkedIn jobs</p>
 
-        <div className='form-row'>
-          <label>Location
-            <input type='text' name='location' value={newJob.location} onChange={handleChange} />
-          </label>
-        </div>
+        {error && (
+          <div className='error'>
+            <p>{error}</p>
+          </div>
+        )}
 
-        <div className='form-row'>
-          <label>Description
-            <textarea name='description' value={newJob.description} onChange={handleChange} rows={4} />
-          </label>
-        </div>
+        <form onSubmit={handleSubmit} className='job-form'>
+          <h2>Add a new job</h2>
 
-        <button type='submit' disabled={submitting}>
-          {submitting ? 'Creating...' : 'Create Job'}
-        </button>
-      </form>
+          <div className='form-row'>
+            <label>Title
+              <input type='text' name='title' value={newJob.title} onChange={handleChange} />
+            </label>
+          </div>
 
-      {loading && <p>Loading jobs...</p>}
+          <div className='form-row'>
+            <label>Company
+              <input type='text' name='company' value={newJob.company} onChange={handleChange} />
+            </label>
+          </div>
 
-      {!loading && (
-        <div className='job-list'>
-          {jobs.length === 0 ? <p>No jobs found.</p> : jobs.map((job) => (
-            <div className='job-card' key={job.id}>
-              <h2>{job.title}</h2>
-              <h3>{job.company}</h3>
-              <p><strong>Location:</strong> {job.location}</p>
-              <p>{job.description}</p>
+          <div className='form-row'>
+            <label>Location
+              <input type='text' name='location' value={newJob.location} onChange={handleChange} />
+            </label>
+          </div>
+
+          <div className='form-row'>
+            <label>Description
+              <textarea name='description' value={newJob.description} onChange={handleChange} rows={4} />
+            </label>
+          </div>
+
+          <button type='submit' disabled={submitting}>
+            {submitting ? 'Creating...' : 'Create Job'}
+          </button>
+        </form>
+
+        <section className='section'>
+          <h2>Local Jobs</h2>
+          {loading && <p>Loading jobs...</p>}
+          {!loading && (
+            <div className='job-list'>
+              {jobs.length === 0 ? (
+                <p>No jobs found.</p>
+              ) : (
+                jobs.map((job) => (
+                  <div className='job-card' key={job.id}>
+                    <h3>{job.title}</h3>
+                    <h4>{job.company}</h4>
+                    <p><strong>Location:</strong> {job.location}</p>
+                    <p>{job.description}</p>
+                  </div>
+                ))
+              )}
             </div>
-          ))}
-        </div>
-      )}
+          )}
+        </section>
+
+        <section className='section linkedin-section'>
+          <h2>LinkedIn Jobs</h2>
+
+          <div className='search-bar'>
+            <input
+              type='text'
+              placeholder='Search by title, company, or location...'
+              value={linkedInFilter}
+              onChange={(e) => setLinkedInFilter(e.target.value)}
+            />
+          </div>
+
+          {linkedInLoading && <p>Loading LinkedIn jobs...</p>}
+
+          {!linkedInLoading && (
+            <div className='job-list'>
+              {filteredLinkedInJobs.length === 0 ? (
+                <p>No LinkedIn jobs found.</p>
+              ) : (
+                filteredLinkedInJobs.map((job, idx) => (
+                  <div className='job-card linkedin-job-card' key={idx}>
+                    <h3>{job.title}</h3>
+                    <h4>{job.company}</h4>
+                    <p><strong>Location:</strong> {job.location}</p>
+                    <p>{job.description}</p>
+                    <span className='source-tag'>Source: {job.source}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </section>
+      </main>
+
+      <footer className='footer'>
+        <p>Job Finder &copy; 2026. Built with React, FastAPI, and PostgreSQL.</p>
+      </footer>
     </div>
   );
 }

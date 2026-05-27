@@ -1,14 +1,61 @@
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem;
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: Arial, sans-serif;
 }
 
-h1 {
-  margin-bottom: 0.25rem;
+/* Header */
+.header {
+  background: #0f172a;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.header .logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-placeholder {
+  background: #f59e0b;
+  color: #0f172a;
+  font-weight: bold;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 1.25rem;
+}
+
+.header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+/* Main */
+.main {
+  flex: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tagline {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  color: #4b0082;
+  margin-top: 0;
+}
+
+/* Job form */
 .job-form {
   background: #f0f0ff;
   padding: 1.5rem;
@@ -20,7 +67,7 @@ h1 {
 .job-form h2 {
   margin: 0 0 1rem;
   font-size: 1.25rem;
-  color: #4b00b0;
+  color: #4b0082;
 }
 
 .form-row {
@@ -48,7 +95,7 @@ h1 {
 
 .job-form button {
   padding: 0.75rem 1.5rem;
-  background: #4b00b0;
+  background: #4b0082;
   color: white;
   border: none;
   border-radius: 6px;
@@ -61,6 +108,31 @@ h1 {
   cursor: not-allowed;
 }
 
+/* Sections */
+.section {
+  margin-top: 2rem;
+}
+
+.linkedin-section {
+  background: #f9f9ff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #e0e0ff;
+}
+
+.search-bar {
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Job list */
 .job-list {
   display: grid;
   gap: 1rem;
@@ -75,18 +147,36 @@ h1 {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.job-card h2 {
+.job-card h3 {
   margin: 0 0 0.25rem;
   color: #800080;
 }
 
-.job-card h3 {
+.job-card h4 {
   margin: 0 0 0.75rem;
   color: #008000;
 }
 
+.job-card p {
+  margin: 0.25rem 0;
+}
+
 .job-card p strong {
-  color: #4b00b0;
+  color: #4b0082;
+}
+
+.linkedin-job-card {
+  border-left: 4px solid #f59e0b;
+}
+
+.source-tag {
+  display: inline-block;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  background: #f59e0b;
+  color: #0f172a;
+  border-radius: 4px;
+  margin-top: 0.5rem;
 }
 
 .error {
@@ -95,4 +185,13 @@ h1 {
   background: #ffebee;
   border-radius: 6px;
   margin-bottom: 1rem;
+}
+
+/* Footer */
+.footer {
+  background: #0f172a;
+  color: #cbd5e1;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
 }
